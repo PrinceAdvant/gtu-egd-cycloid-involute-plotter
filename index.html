@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GTU EGD cycloid and involute plotter: 12-division construction table, coordinates and a sketch</title>
+<meta name="description" content="GTU Hero&#x27;s EGD guide puts Engineering Curves (Conics, Cycloidal, Involutes, Spirals) in Unit 2 of the new scheme (BE01000061 / BE01R00061), 10% and pr">
+<style>body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.5}input,textarea,select{margin:.3rem 0;padding:.3rem;width:min(100%,360px);box-sizing:border-box}textarea{width:min(100%,520px);min-height:5rem;font-family:ui-monospace,monospace}#out{font-weight:bold;margin-top:1rem;white-space:pre-wrap;font-family:ui-monospace,monospace}#plot{margin-top:1rem}svg{max-width:100%;height:auto;border:1px solid #ccc;background:#fff}</style></head><body>
+<h1>GTU EGD cycloid and involute plotter: 12-division construction table, coordinates and a sketch</h1>
+<p>GTU Hero&#x27;s EGD guide puts Engineering Curves (Conics, Cycloidal, Involutes, Spirals) in Unit 2 of the new scheme (BE01000061 / BE01R00061), 10% and practical, and lists an engineering curve (ellipse, parabola, or involute) as a 7-mark type that is present in both schemes. Diameter daalo: this page prints a 12-division table of coordinates for a cycloid or for the involute of a circle, plus a small sketch you can check your sheet against. Practice diameters are my own, not from a GTU paper. 12 equal parts, arc lengths mark karo, phir fair curve se join karna.</p>
+<h2>Tool</h2>
+<label>Curve<br>
+<select id="kind"><option value="cycloid">cycloid</option><option value="involute">involute of a circle</option></select></label><br>
+<label>Diameter of the rolling circle (cycloid) or base circle (involute), in mm<br><input id="d" value="60"></label><br>
+<label>Equal divisions (12 is the usual exam choice)<br><input id="parts" value="12"></label><br>
+<button type="button" onclick="go()">Show</button>
+<div id="out"></div>
+<div id="plot"></div>
+<h2>Facts used</h2>
+<ul><li>A cycloid is the path of a point on a circle that rolls, without slip, on a straight line. For one revolution the directing line has length 2 pi r, and the maximum height is 2r.</li><li>Standard construction: divide the rolling circle and the directing line into the same number of equal parts (usually 12). After k parts, the centre has moved k / n of 2 pi r, and the tracing point has rotated through k / n of 360 degrees.</li><li>An involute of a circle is the path of a point on a tight string as the string is unrolled from the base circle. Each tangent is marked equal to the unrolled arc length R * theta.</li><li>Default practice: a 60 mm rolling circle cycloid, 12 divisions. At 90 degrees, (x, y) = (30(pi/2 - 1), 30) mm. At 180 degrees, (30 pi, 60) mm. For an 80 mm base-circle involute, the 90 degree point is (20 pi, 40) mm.</li><li>The guide lists cycloidal curves and involutes in Unit 2 of the new scheme, and names involute as one of the 7-mark engineering-curve options (with ellipse and parabola). Dimensions and the asked method change every session. Past pattern is not a promise.</li></ul>
+<h2>Galti mat karna</h2>
+<ul><li>Write which curve you are drawing, the diameter, and the number of divisions, before the table. A sketch without the construction steps is easy to under-mark.</li><li>For a cycloid, the directing line must be exactly 2 pi r, not the diameter. Using d instead of 2 pi r shortens the whole curve.</li><li>For an involute, the length on the tangent equals the unrolled arc, not the chord. Division 3 gets three arc steps, not three chords.</li><li>New-scheme students still have Unit 2 curves. Old-scheme isometric projection is a different topic (and is not in the new scheme). Do not mix the two.</li><li>If the exam is tomorrow and you have to skip something, the guide&#x27;s last-night plan puts scales and curves below lines, planes and orthographic. Practise at least one involute or cycloid anyway if Unit 2 is in your syllabus.</li></ul>
+<p>Unit weightages for both schemes and the topics new-scheme students can skip: <a href="https://gtuhero.com/blogs/gtu-egd-paper-engineering-graphics-pyq">GTU Hero EGD guide</a> (GTU Hero is my project).</p>
+<script src="tool.js"></script>
+<script>
+function go(){
+let out;
+  const plot = document.getElementById('plot');
+  plot.innerHTML = '';
+  try {
+    const kind = document.getElementById('kind').value;
+    const d = CURVE.num(document.getElementById('d').value, 'Diameter');
+    const parts = Number(document.getElementById('parts').value);
+    const r = kind === 'cycloid' ? CURVE.cycloid(d, parts) : CURVE.involute(d, parts, 1);
+    out = CURVE.format(r);
+    plot.innerHTML = CURVE.svg(r);
+  } catch (e) { out = 'Check your input: ' + e.message; }
+  document.getElementById('out').textContent = out;
+}
+go();
+
+</script>
+</body></html>
